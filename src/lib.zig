@@ -1,5 +1,5 @@
 const std = @import("std");
-const licenses = @import("licenses-text");
+pub const licenses = @import("licenses-text");
 const leven = @import("leven");
 const fscheck = @import("fs-check");
 
