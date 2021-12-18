@@ -3,7 +3,7 @@ pub const licenses = @import("licenses-text");
 const leven = @import("leven");
 const fscheck = @import("fs-check");
 
-pub fn detect(alloc: *std.mem.Allocator, license_src: []const u8) ![]const u8 {
+pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
     var min: ?usize = null;
     var ind: ?usize = null;
 
@@ -19,7 +19,7 @@ pub fn detect(alloc: *std.mem.Allocator, license_src: []const u8) ![]const u8 {
     return licenses.spdx[ind.?][0];
 }
 
-pub fn detectInDir(alloc: *std.mem.Allocator, dir: std.fs.Dir) !?[]const u8 {
+pub fn detectInDir(alloc: std.mem.Allocator, dir: std.fs.Dir) !?[]const u8 {
     const lic_filename = (try testLicenseFile(dir, "LICENSE")) orelse
         (try testLicenseFile(dir, "LICENSE.md")) orelse
         null;
