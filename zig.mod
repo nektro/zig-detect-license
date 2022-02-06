@@ -6,4 +6,3 @@ description: Given an input text guess which SPDX license it most likely is an i
 dependencies:
   - src: git https://github.com/nektro/zig-licenses-text
   - src: git https://github.com/nektro/zig-leven
-  - src: git https://github.com/nektro/zig-fs-check

@@ -1,7 +1,6 @@
 const std = @import("std");
 pub const licenses = @import("licenses-text");
 const leven = @import("leven");
-const fscheck = @import("fs-check");
 
 pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
     var min: ?usize = null;
@@ -20,21 +19,19 @@ pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
 }
 
 pub fn detectInDir(alloc: std.mem.Allocator, dir: std.fs.Dir) !?[]const u8 {
-    const lic_filename = (try testLicenseFile(dir, "LICENSE")) orelse
-        (try testLicenseFile(dir, "LICENSE.md")) orelse
-        null;
+    const b = (try testLicenseFile(alloc, dir, "LICENSE")) orelse
+        (try testLicenseFile(alloc, dir, "LICENSE.md")) orelse
+        return null;
 
-    if (lic_filename == null) return null;
-    const f = try dir.openFile(lic_filename.?, .{});
-    defer f.close();
-    const b = try f.reader().readAllAlloc(alloc, 1024 * 1024);
     defer alloc.free(b);
     return try detect(alloc, b);
 }
 
-//
-//
-
-pub fn testLicenseFile(dir: std.fs.Dir, name: []const u8) !?[]const u8 {
-    return if (try fscheck.doesFileExist(dir, name)) name else null;
+pub fn testLicenseFile(alloc: std.mem.Allocator, dir: std.fs.Dir, name: []const u8) !?[]const u8 {
+    const file = dir.openFile(name, .{}) catch |err| switch (err) {
+        error.FileNotFound => return null,
+        else => |e| return e,
+    };
+    defer file.close();
+    return try file.reader().readAllAlloc(alloc, 1024 * 1024);
 }
