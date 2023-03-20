@@ -6,7 +6,7 @@ pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
     var min: ?usize = null;
     var ind: ?usize = null;
 
-    for (licenses.spdx) |item, i| {
+    for (licenses.spdx, 0..) |item, i| {
         const distance = try leven.leven(u8, alloc, license_src, item[1], min);
 
         if (min == null or distance < min.?) {
