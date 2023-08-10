@@ -21,6 +21,7 @@ pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
 pub fn detectInDir(alloc: std.mem.Allocator, dir: std.fs.Dir) !?[]const u8 {
     const b = (try testLicenseFile(alloc, dir, "LICENSE")) orelse
         (try testLicenseFile(alloc, dir, "LICENSE.md")) orelse
+        (try testLicenseFile(alloc, dir, "LICENSE.txt")) orelse
         return null;
 
     defer alloc.free(b);
