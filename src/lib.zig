@@ -14,7 +14,6 @@ pub fn detect(alloc: std.mem.Allocator, license_src: []const u8) ![]const u8 {
             ind = i;
         }
     }
-
     return licenses.spdx[ind.?][0];
 }
 
@@ -23,7 +22,6 @@ pub fn detectInDir(alloc: std.mem.Allocator, dir: std.fs.Dir) !?[]const u8 {
         (try testLicenseFile(alloc, dir, "LICENSE.md")) orelse
         (try testLicenseFile(alloc, dir, "LICENSE.txt")) orelse
         return null;
-
     defer alloc.free(b);
     return try detect(alloc, b);
 }
