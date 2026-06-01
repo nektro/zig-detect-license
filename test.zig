@@ -13,7 +13,6 @@ test {
 }
 test {
     const alloc = std.testing.allocator;
-    const dir = std.fs.cwd();
-    const license = try detect.detectInDir(alloc, dir);
+    const license = try detect.detectInDir(alloc, .cwd());
     try expect(license).toEqualString("MIT");
 }
