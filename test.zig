@@ -3,7 +3,11 @@ const detect = @import("detect-license");
 const expect = @import("expect").expect;
 
 test {
-    std.testing.refAllDeclsRecursive(detect);
+    _ = &detect.detect;
+    _ = &detect.detectInDir;
+    _ = &detect.testLicenseFile;
+    _ = &detect.licenses.find;
+    _ = &detect.licenses.spdx;
 }
 test {
     const alloc = std.testing.allocator;
